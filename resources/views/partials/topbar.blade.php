@@ -48,7 +48,7 @@
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
                     <li><a class="dropdown-item" href="{{ route('users.show', auth()->user()->id) }}"><i class="bi bi-person me-2 text-gray-400"></i>Profile</a></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2 text-gray-400"></i>Settings</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-clock-history me-2 text-gray-400"></i>Activity Log</a></li>
+                    <li><a class="dropdown-item" href="{{ route('activity-log.index') }}"><i class="bi bi-clock-history me-2 text-gray-400"></i>Activity Log</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}">

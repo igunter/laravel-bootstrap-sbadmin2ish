@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +32,6 @@ Route::get('/dashboard', function () {
 
 Route::get('/users-data', [UserController::class, 'data'])->middleware(['auth', 'admin'])->name('users.data');
 Route::resource('users', UserController::class)->middleware(['auth', 'admin']);
+
+Route::get('/activity-log-data', [ActivityLogController::class, 'data'])->middleware(['auth', 'admin'])->name('activity-log.data');
+Route::get('/activity-log', [ActivityLogController::class, 'index'])->middleware(['auth', 'admin'])->name('activity-log.index');

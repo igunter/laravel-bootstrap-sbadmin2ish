@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,8 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
+        ActivityLogger::log('login', Auth::user(), description: Auth::user()->name . ' logged in.');
+
         $default = Auth::user()->is_admin ? route('dashboard') : route('holding');
 
         return redirect()->intended($default);
@@ -40,10 +43,14 @@ class AuthController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        ActivityLogger::log('logout', $user, description: $user->name . ' logged out.', causerId: $user->id);
 
         return redirect()->route('login');
     }

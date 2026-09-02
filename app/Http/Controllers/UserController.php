@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\User;
+use App\Services\ActivityLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -84,19 +86,39 @@ class UserController extends Controller
             'is_admin' => ['sometimes', 'boolean'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'is_admin' => $request->boolean('is_admin'),
         ]);
 
+        ActivityLogger::log(
+            'user.created',
+            $user,
+            new: [
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_admin' => $user->is_admin,
+            ],
+            description: "Created user {$user->name}.",
+        );
+
         return redirect()->route('users.index')->with('status', 'User created successfully.');
     }
 
     public function show(User $user): View
     {
-        return view('users.show', ['user' => $user]);
+        $activityLogs = ActivityLog::with('causer')
+            ->where(function ($query) use ($user) {
+                $query->where(['subject_type' => $user->getMorphClass(), 'subject_id' => $user->id])
+                    ->orWhere('user_id', $user->id);
+            })
+            ->latest()
+            ->limit(50)
+            ->get();
+
+        return view('users.show', ['user' => $user, 'activityLogs' => $activityLogs]);
     }
 
     public function edit(User $user): View
@@ -113,15 +135,57 @@ class UserController extends Controller
             'is_admin' => ['sometimes', 'boolean'],
         ]);
 
+        $old = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_admin' => $user->is_admin,
+        ];
+
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->is_admin = $request->boolean('is_admin');
 
-        if (! empty($validated['password'])) {
+        $passwordChanged = ! empty($validated['password']);
+
+        if ($passwordChanged) {
             $user->password = Hash::make($validated['password']);
         }
 
         $user->save();
+
+        $new = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_admin' => $user->is_admin,
+        ];
+
+        $changedOld = [];
+        $changedNew = [];
+
+        foreach ($new as $key => $value) {
+            if ($old[$key] !== $value) {
+                $changedOld[$key] = $old[$key];
+                $changedNew[$key] = $value;
+            }
+        }
+
+        if (! empty($changedNew)) {
+            ActivityLogger::log(
+                'user.updated',
+                $user,
+                old: $changedOld,
+                new: $changedNew,
+                description: "Updated user {$user->name}.",
+            );
+        }
+
+        if ($passwordChanged) {
+            ActivityLogger::log(
+                'user.password_changed',
+                $user,
+                description: "Password changed for {$user->name}.",
+            );
+        }
 
         return redirect()->route('users.index')->with('status', 'User updated successfully.');
     }
@@ -132,7 +196,20 @@ class UserController extends Controller
             return back()->withErrors(['user' => 'You cannot delete your own account.']);
         }
 
+        $old = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_admin' => $user->is_admin,
+        ];
+
         $user->delete();
+
+        ActivityLogger::log(
+            'user.deleted',
+            $user,
+            old: $old,
+            description: "Deleted user {$old['name']}.",
+        );
 
         return redirect()->route('users.index')->with('status', 'User deleted successfully.');
     }

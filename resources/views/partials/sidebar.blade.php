@@ -29,6 +29,13 @@
         </div>
     </div>
 
+    <div class="sb-nav-item">
+        <a class="sb-nav-link {{ request()->routeIs('activity-log.*') ? 'active' : '' }}" href="{{ route('activity-log.index') }}">
+            <i class="bi bi-clock-history"></i>
+            <span>Activity Log</span>
+        </a>
+    </div>
+
     <hr class="sidebar-divider">
 
     <div class="sidebar-heading">Addons</div>
