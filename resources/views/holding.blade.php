@@ -16,7 +16,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
         <!-- SB Admin 2 (ish) theme -->
-        <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/sb-admin-2.css') }}?v={{ filemtime(public_path('css/sb-admin-2.css')) }}" rel="stylesheet">
     </head>
     <body class="d-flex flex-column min-vh-100">
         <header class="sb-topbar navbar navbar-expand navbar-light bg-white sticky-top">

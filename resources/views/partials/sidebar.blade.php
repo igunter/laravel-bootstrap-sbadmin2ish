@@ -18,12 +18,12 @@
     <div class="sidebar-heading">Interface</div>
 
     <div class="sb-nav-item">
-        <a class="sb-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="#collapseUsers" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->routeIs('users.*') ? 'true' : 'false' }}" aria-controls="collapseUsers">
+        <a class="sb-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="#collapseUsers" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseUsers">
             <i class="bi bi-people"></i>
             <span>Users</span>
             <i class="bi bi-chevron-right sb-chevron"></i>
         </a>
-        <div class="collapse {{ request()->routeIs('users.*') ? 'show' : '' }}" id="collapseUsers">
+        <div class="collapse" id="collapseUsers">
             <a class="sb-nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}"><span>Show All</span></a>
             <a class="sb-nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}" href="{{ route('users.create') }}"><span>Add New</span></a>
         </div>

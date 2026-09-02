@@ -76,6 +76,47 @@ body {
     padding: 0.75rem 0.5rem;
 }
 
+/* Flyout submenu: when the sidebar is collapsed to icon-only (desktop), sub-links
+   can't render inline (no room for labels), so show them as a popup to the right
+   of the parent icon instead, on hover or when explicitly toggled open. Scoped to
+   desktop only — on mobile, "toggled" means the full-width sidebar is showing, so
+   sub-links render inline as normal there. */
+@media (min-width: 769px) {
+    .sb-sidebar.toggled .sb-nav-item {
+        position: relative;
+    }
+
+    .sb-sidebar.toggled .sb-nav-item > .collapse,
+    .sb-sidebar.toggled .sb-nav-item > .collapsing {
+        display: none;
+    }
+
+    .sb-sidebar.toggled .sb-nav-item:hover > .collapse,
+    .sb-sidebar.toggled .sb-nav-item > .collapse.show {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        min-width: 12rem;
+        background-color: var(--sb-primary-dark);
+        border-radius: 0 0.35rem 0.35rem 0.35rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.3);
+        padding: 0.5rem 0;
+        z-index: 1050;
+    }
+
+    .sb-sidebar.toggled .sb-nav-item > .collapse .sb-nav-link,
+    .sb-sidebar.toggled .sb-nav-item > .collapse.show .sb-nav-link {
+        padding: 0.5rem 1rem;
+        text-align: left;
+    }
+
+    .sb-sidebar.toggled .sb-nav-item > .collapse .sb-nav-link span,
+    .sb-sidebar.toggled .sb-nav-item > .collapse.show .sb-nav-link span {
+        display: inline !important;
+    }
+}
+
 .sb-sidebar .sidebar-brand {
     display: flex;
     align-items: center;

@@ -19,7 +19,7 @@
         <link href="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.css" rel="stylesheet">
 
         <!-- SB Admin 2 (ish) theme -->
-        <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/sb-admin-2.css') }}?v={{ filemtime(public_path('css/sb-admin-2.css')) }}" rel="stylesheet">
 
         @stack('styles')
     </head>
@@ -52,7 +52,7 @@
         <script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.js"></script>
 
         <!-- SB Admin 2 (ish) theme -->
-        <script src="{{ asset('js/sb-admin-2.js') }}"></script>
+        <script src="{{ asset('js/sb-admin-2.js') }}?v={{ filemtime(public_path('js/sb-admin-2.js')) }}"></script>
 
         @stack('scripts')
     </body>
