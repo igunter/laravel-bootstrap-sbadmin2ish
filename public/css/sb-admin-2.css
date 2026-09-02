@@ -1,0 +1,266 @@
+/*
+ * SB Admin 2 (ish) — hand-rolled theme layer on top of Bootstrap 5
+ * Approximates https://startbootstrap.com/theme/sb-admin-2 (originally Bootstrap 4 / Font Awesome)
+ */
+
+:root {
+    --sb-primary: #4e73df;
+    --sb-primary-dark: #224abe;
+    --sb-secondary: #858796;
+    --sb-success: #1cc88a;
+    --sb-info: #36b9cc;
+    --sb-warning: #f6c23e;
+    --sb-danger: #e74a3b;
+    --sb-light: #f8f9fc;
+    --sb-dark: #5a5c69;
+    --sb-sidebar-width: 224px;
+    --sb-sidebar-collapsed-width: 90px;
+}
+
+body {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--sb-light);
+    color: #3a3b45;
+}
+
+.text-gray-300 { color: #dddfeb !important; }
+.text-gray-400 { color: #d1d3e2 !important; }
+.text-gray-500 { color: #b7b9cc !important; }
+.text-gray-600 { color: #858796 !important; }
+.text-gray-800 { color: #5a5c69 !important; }
+.text-gray-900 { color: #3a3b45 !important; }
+
+.text-xs { font-size: 0.7rem; }
+.font-weight-bold { font-weight: 700 !important; }
+
+/* ---------- Wrapper ---------- */
+#wrapper {
+    display: flex;
+}
+
+#content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: var(--sb-light);
+}
+
+#content {
+    flex: 1 0 auto;
+}
+
+/* ---------- Sidebar ---------- */
+.sb-sidebar {
+    width: var(--sb-sidebar-width);
+    min-width: var(--sb-sidebar-width);
+    background: linear-gradient(180deg, var(--sb-primary) 10%, var(--sb-primary-dark) 100%);
+    min-height: 100vh;
+    transition: width 0.15s ease, min-width 0.15s ease;
+}
+
+.sb-sidebar.toggled {
+    width: var(--sb-sidebar-collapsed-width);
+    min-width: var(--sb-sidebar-collapsed-width);
+}
+
+.sb-sidebar.toggled .sb-nav-link span,
+.sb-sidebar.toggled .sidebar-heading,
+.sb-sidebar.toggled .sb-brand-text {
+    display: none;
+}
+
+.sb-sidebar.toggled .sb-nav-link {
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+}
+
+.sb-sidebar .sidebar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4.375rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.05rem;
+    color: #fff;
+    text-decoration: none;
+    padding: 1.5rem 1rem;
+    text-align: center;
+}
+
+.sb-sidebar .sidebar-brand i {
+    font-size: 1.6rem;
+    margin-right: 0.5rem;
+}
+
+.sb-sidebar hr.sidebar-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin: 0 1rem 1rem;
+}
+
+.sb-sidebar .sidebar-heading {
+    text-align: center;
+    padding: 0 1rem;
+    font-weight: 800;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.13rem;
+    margin-bottom: 0.5rem;
+}
+
+.sb-nav-item {
+    position: relative;
+}
+
+.sb-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sb-nav-link i {
+    font-size: 0.9rem;
+    width: 1.2rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+.sb-nav-link:hover,
+.sb-nav-link.active {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sb-nav-link:hover i,
+.sb-nav-link.active i {
+    color: #fff;
+}
+
+.sb-nav-link[aria-expanded="true"] .sb-chevron {
+    transform: rotate(90deg);
+}
+
+.sb-chevron {
+    margin-left: auto;
+    font-size: 0.7rem;
+    transition: transform 0.15s ease;
+}
+
+.sb-sidebar .collapse .sb-nav-link,
+.sb-sidebar .collapsing .sb-nav-link {
+    padding-left: 2.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ---------- Topbar ---------- */
+.sb-topbar {
+    height: 4.375rem;
+    background-color: #fff;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.sb-topbar .btn-toggle-sidebar {
+    color: var(--sb-secondary);
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+}
+
+.sb-topbar .topbar-divider {
+    width: 0;
+    border-right: 1px solid #e3e6f0;
+    height: calc(4.375rem - 2rem);
+    margin: auto 1rem;
+}
+
+.sb-topbar .nav-link .badge {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.1rem;
+    font-size: 0.6rem;
+}
+
+/* ---------- Cards ---------- */
+.card {
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.border-left-primary { border-left: 0.25rem solid var(--sb-primary) !important; }
+.border-left-success { border-left: 0.25rem solid var(--sb-success) !important; }
+.border-left-info { border-left: 0.25rem solid var(--sb-info) !important; }
+.border-left-warning { border-left: 0.25rem solid var(--sb-warning) !important; }
+.border-left-danger { border-left: 0.25rem solid var(--sb-danger) !important; }
+
+.card-header {
+    background-color: var(--sb-light);
+    font-weight: 700;
+    color: var(--sb-primary-dark);
+}
+
+/* ---------- Footer ---------- */
+.sb-footer {
+    background-color: #fff;
+    border-top: 1px solid #e3e6f0;
+    padding: 1.5rem 0;
+    flex-shrink: 0;
+}
+
+/* ---------- Scroll to top ---------- */
+.scroll-to-top {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    display: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    text-align: center;
+    color: #fff;
+    background: rgba(90, 92, 105, 0.5);
+    line-height: 46px;
+    border-radius: 0.35rem;
+}
+
+.scroll-to-top:hover {
+    background: var(--sb-dark);
+    color: #fff;
+}
+
+.scroll-to-top.show {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .sb-sidebar {
+        position: fixed;
+        z-index: 1040;
+        left: calc(var(--sb-sidebar-width) * -1);
+    }
+
+    .sb-sidebar.toggled {
+        left: 0;
+        width: var(--sb-sidebar-width);
+        min-width: var(--sb-sidebar-width);
+    }
+
+    .sb-sidebar.toggled .sb-nav-link span,
+    .sb-sidebar.toggled .sidebar-heading,
+    .sb-sidebar.toggled .sb-brand-text {
+        display: inline;
+    }
+
+    .sb-sidebar.toggled .sb-nav-link {
+        text-align: left;
+        padding: 0.75rem 1rem;
+    }
+}
