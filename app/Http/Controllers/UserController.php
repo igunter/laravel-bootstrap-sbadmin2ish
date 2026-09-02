@@ -56,6 +56,7 @@ class UserController extends Controller
             'email' => $user->email,
             'is_admin' => $user->is_admin,
             'created_at' => $user->created_at->format('M j, Y'),
+            'show_url' => route('users.show', $user),
             'edit_url' => route('users.edit', $user),
             'delete_url' => route('users.destroy', $user),
             'is_self' => $request->user()->is($user),
@@ -93,9 +94,9 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('status', 'User created successfully.');
     }
 
-    public function show(User $user): RedirectResponse
+    public function show(User $user): View
     {
-        return redirect()->route('users.edit', $user);
+        return view('users.show', ['user' => $user]);
     }
 
     public function edit(User $user): View

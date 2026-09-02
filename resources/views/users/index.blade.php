@@ -110,6 +110,7 @@
 
                             return '' +
                                 '<div class="input-group justify-content-end">' +
+                                '<a href="' + row.show_url + '" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>' +
                                 '<a href="' + row.edit_url + '" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>' +
                                 '<button type="button" class="btn btn-sm btn-outline-danger" data-delete-url="' + row.delete_url + '" data-delete-name="' + escapeHtml(row.name) + '" ' + deleteDisabled + '><i class="bi bi-trash"></i></button>' +
                                 '</div>';
