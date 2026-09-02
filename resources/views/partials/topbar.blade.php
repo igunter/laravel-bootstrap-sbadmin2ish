@@ -4,6 +4,11 @@
             <i class="bi bi-list"></i>
         </button>
 
+        <a class="navbar-brand d-flex d-md-none align-items-center ms-2 me-auto fw-bold text-gray-800 text-decoration-none" href="{{ url('/') }}">
+            <i class="bi bi-boxes text-primary me-2"></i>
+            {{ config('app.name', 'Laravel') }}
+        </a>
+
         <form class="d-none d-md-flex ms-3 me-auto" role="search">
             <div class="input-group">
                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search">

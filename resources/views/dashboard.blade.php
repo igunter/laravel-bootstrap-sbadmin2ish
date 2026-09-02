@@ -89,7 +89,7 @@
         <div class="col-xl-8 col-lg-7 mb-4">
             <div class="card h-100">
                 <div class="card-header d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0">Earnings Overview</h6>
+                    <h6 class="m-0">New Users (Last 30 Days)</h6>
                 </div>
                 <div class="card-body">
                     <div style="position: relative; height: 320px;">
@@ -148,26 +148,62 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script>
         const areaCtx = document.getElementById('areaChart');
-        new Chart(areaCtx, {
-            type: 'line',
+        const areaChart = new Chart(areaCtx, {
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Earnings',
-                    data: [1000, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
-                    borderColor: '#4e73df',
-                    backgroundColor: 'rgba(78, 115, 223, 0.15)',
-                    fill: true,
-                    tension: 0.3,
-                }],
+                labels: [],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'New Users',
+                        data: [],
+                        borderColor: '#4e73df',
+                        backgroundColor: 'rgba(78, 115, 223, 0.4)',
+                        borderRadius: 3,
+                        yAxisID: 'y',
+                        order: 2,
+                    },
+                    {
+                        type: 'line',
+                        label: 'Total Users',
+                        data: [],
+                        borderColor: '#1cc88a',
+                        backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                        tension: 0.3,
+                        yAxisID: 'y1',
+                        order: 1,
+                    },
+                ],
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { ticks: { callback: (v) => '$' + v.toLocaleString() } } },
+                plugins: { legend: { display: true, position: 'bottom' } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        position: 'left',
+                        ticks: { precision: 0 },
+                        title: { display: true, text: 'New Users' },
+                    },
+                    y1: {
+                        beginAtZero: false,
+                        position: 'right',
+                        ticks: { precision: 0 },
+                        grid: { drawOnChartArea: false },
+                        title: { display: true, text: 'Total Users' },
+                    },
+                },
             },
         });
+
+        fetch(@json(route('dashboard.signups')))
+            .then((response) => response.json())
+            .then((payload) => {
+                areaChart.data.labels = payload.labels;
+                areaChart.data.datasets[0].data = payload.data;
+                areaChart.data.datasets[1].data = payload.cumulative;
+                areaChart.update();
+            });
 
         const pieCtx = document.getElementById('pieChart');
         new Chart(pieCtx, {

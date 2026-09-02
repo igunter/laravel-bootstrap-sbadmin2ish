@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +27,8 @@ Route::get('/holding', function () {
     return view('holding');
 })->middleware('auth')->name('holding');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'admin'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
+Route::get('/dashboard-data/signups', [DashboardController::class, 'signups'])->middleware(['auth', 'admin'])->name('dashboard.signups');
 
 Route::get('/users-data', [UserController::class, 'data'])->middleware(['auth', 'admin'])->name('users.data');
 Route::resource('users', UserController::class)->middleware(['auth', 'admin']);

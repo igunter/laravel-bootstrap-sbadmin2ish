@@ -12,12 +12,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'is_admin' => true,
-            'name'     => 'Test User',
-            'email'    => 'test@example.com',
-            'password' => bcrypt('P4$$w0rd!'),
+            'is_admin'   => true,
+            'name'       => 'Test User',
+            'email'      => 'test@example.com',
+            'password'   => bcrypt('P4$$w0rd!'),
+            'created_at' => now()->subDays(7),
+            'updated_at' => now()->subDays(7),
         ]);
 
-        User::factory(10)->create();
+        User::factory(rand(20,500))->create();
     }
 }

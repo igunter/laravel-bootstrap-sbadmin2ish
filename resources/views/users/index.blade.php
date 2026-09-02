@@ -30,7 +30,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Joined</th>
+                            <th class="d-none d-md-table-cell text-end">Joined</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
@@ -86,10 +86,15 @@
                 ajax: {
                     url: @json(route('users.data')),
                 },
-                order: [[0, 'asc']],
+                order: [[1, 'asc']],
                 columns: [
                     { data: 'name' },
-                    { data: 'email' },
+                    {
+                        data: 'email',
+                        render: function (email) {
+                            return escapeHtml(email).replace('@', '@<br class="d-md-none">');
+                        },
+                    },
                     {
                         data: 'is_admin',
                         className: 'text-center',
@@ -99,7 +104,7 @@
                                 : '<span class="badge bg-secondary">User</span>';
                         },
                     },
-                    { data: 'created_at' },
+                    { data: 'created_at', className: 'd-none d-md-table-cell text-end' },
                     {
                         data: null,
                         orderable: false,
