@@ -64,6 +64,13 @@ body {
     top: 0;
     height: 100vh;
     overflow-y: auto;
+    /* Sticky positioning makes this a stacking context, so its z-index:auto
+       descendants (including the flyout submenu) only ever compete against
+       other sidebar content — never against #content-wrapper, which paints
+       after it in DOM order. An explicit z-index promotes the whole sidebar
+       (and its flyout) above the main content, matching the mobile rule
+       below. */
+    z-index: 1040;
 }
 
 .sb-sidebar.toggled {
@@ -84,9 +91,16 @@ body {
 
 /* Flyout submenu: when the sidebar is collapsed to icon-only (desktop), sub-links
    can't render inline (no room for labels), so show them as a popup to the right
-   of the parent icon instead, on hover or when explicitly toggled open. Scoped to
-   desktop only — on mobile, "toggled" means the full-width sidebar is showing, so
-   sub-links render inline as normal there. */
+   of the parent icon instead, on hover of the parent icon or the flyout itself.
+   Scoped to desktop only — on mobile, "toggled" means the full-width sidebar is
+   showing, so sub-links render inline as normal there.
+
+   The flyout is positioned with `position: fixed` (top/left set by JS from the
+   parent's bounding rect) rather than `absolute`, because .sb-sidebar scrolls
+   vertically (overflow-y: auto) — per spec that forces overflow-x to clip too,
+   which would cut off an absolutely-positioned flyout extending past the sidebar's
+   right edge. Fixed positioning escapes that clipping since it's relative to the
+   viewport, not the scrolling ancestor. */
 @media (min-width: 769px) {
     .sb-sidebar.toggled .sb-nav-item {
         position: relative;
@@ -97,12 +111,9 @@ body {
         display: none;
     }
 
-    .sb-sidebar.toggled .sb-nav-item:hover > .collapse,
-    .sb-sidebar.toggled .sb-nav-item > .collapse.show {
+    .sb-sidebar.toggled .sb-nav-item > .collapse.flyout-open {
         display: block !important;
-        position: absolute;
-        top: 0;
-        left: 100%;
+        position: fixed;
         min-width: 12rem;
         background-color: var(--sb-primary-dark);
         border-radius: 0 0.35rem 0.35rem 0.35rem;
@@ -111,14 +122,12 @@ body {
         z-index: 1050;
     }
 
-    .sb-sidebar.toggled .sb-nav-item > .collapse .sb-nav-link,
-    .sb-sidebar.toggled .sb-nav-item > .collapse.show .sb-nav-link {
+    .sb-sidebar.toggled .sb-nav-item > .collapse.flyout-open .sb-nav-link {
         padding: 0.5rem 1rem;
         text-align: left;
     }
 
-    .sb-sidebar.toggled .sb-nav-item > .collapse .sb-nav-link span,
-    .sb-sidebar.toggled .sb-nav-item > .collapse.show .sb-nav-link span {
+    .sb-sidebar.toggled .sb-nav-item > .collapse.flyout-open .sb-nav-link span {
         display: inline !important;
     }
 }
